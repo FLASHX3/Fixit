@@ -33,6 +33,15 @@
 .premium-title-icon-row-reverse .premium-title-icon {
   margin-left: 10px; }
 
+.premium-title-flex-start .premium-title-header {
+  text-align: left; }
+
+.premium-title-center .premium-title-header {
+  text-align: center; }
+
+.premium-title-flex-end .premium-title-header {
+  text-align: right; }
+
 .premium-title-style3,
 .premium-title-style4 {
   display: -webkit-flex;

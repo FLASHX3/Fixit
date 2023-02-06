@@ -107,6 +107,7 @@ class Premium_Maps extends Widget_Base {
 	 */
 	public function get_script_depends() {
 		return array(
+			'elementor-waypoints',
 			'pa-maps-cluster',
 			'pa-maps-api',
 			'pa-maps',
@@ -249,37 +250,19 @@ class Premium_Maps extends Widget_Base {
 
 		$repeater = new REPEATER();
 
-		$repeater->add_control(
-			'pin_icon',
-			array(
-				'label' => __( 'Custom Icon', 'premium-addons-for-elementor' ),
-				'type'  => Controls_Manager::MEDIA,
-			)
-		);
+		$repeater->start_controls_tabs( 'marker_tabs' );
 
-		$repeater->add_control(
-			'pin_icon_size',
+		$repeater->start_controls_tab(
+			'marker_content_tab',
 			array(
-				'label'      => __( 'Size', 'premium-addons-for-elementor' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 1,
-						'max' => 200,
-					),
-					'em' => array(
-						'min' => 1,
-						'max' => 20,
-					),
-				),
+				'label' => esc_html__( 'Content', 'elementor-pro' ),
 			)
 		);
 
 		$repeater->add_control(
 			'premium_map_pin_location_finder',
 			array(
-				'label' => __( 'Latitude & Longitude Finder', 'premium-addons-for-elementor' ),
+				'label' => __( 'Location Finder', 'premium-addons-for-elementor' ),
 				'type'  => Controls_Manager::SWITCHER,
 			)
 		);
@@ -287,7 +270,7 @@ class Premium_Maps extends Widget_Base {
 		$repeater->add_control(
 			'premium_map_pin_notice',
 			array(
-				'label'       => __( 'Find Latitude & Longitude', 'elementor' ),
+				'label'       => __( 'Find Location', 'elementor' ),
 				'type'        => Controls_Manager::RAW_HTML,
 				'raw'         => '<form onsubmit="getPinAddress(this);" action="javascript:void(0);"><input type="text" id="premium-map-get-address" class="premium-map-get-address" style="margin-top:10px; margin-bottom:10px;"><input type="submit" value="Search" class="elementor-button elementor-button-default" onclick="getPinAddress(this)"></form>',
 				'label_block' => true,
@@ -321,33 +304,9 @@ class Premium_Maps extends Widget_Base {
 		);
 
 		$repeater->add_control(
-			'open_by_default',
-			array(
-				'label'      => __( 'Opened By Default', 'premium-addons-for-elementor' ),
-				'type'       => Controls_Manager::SWITCHER,
-				'separator'  => 'before',
-				'conditions' => array(
-					'relation' => 'or',
-					'terms'    => array(
-						array(
-							'name'     => 'pin_title',
-							'operator' => '!==',
-							'value'    => '',
-						),
-						array(
-							'name'     => 'pin_desc',
-							'operator' => '!==',
-							'value'    => '',
-						),
-					),
-				),
-			)
-		);
-
-		$repeater->add_control(
 			'pin_title',
 			array(
-				'label'       => __( 'Title', 'premium-addons-for-elementor' ),
+				'label'       => __( 'Location Title', 'premium-addons-for-elementor' ),
 				'type'        => Controls_Manager::TEXT,
 				'dynamic'     => array( 'active' => true ),
 				'label_block' => true,
@@ -367,7 +326,7 @@ class Premium_Maps extends Widget_Base {
 		$repeater->add_control(
 			'advanced_view',
 			array(
-				'label' => __( 'Advanced Marker', 'premium-addons-for-elementor' ),
+				'label' => __( 'Advanced Info', 'premium-addons-for-elementor' ),
 				'type'  => Controls_Manager::SWITCHER,
 			)
 		);
@@ -393,6 +352,30 @@ class Premium_Maps extends Widget_Base {
 		do_action( 'pa_maps_marker_controls', $repeater );
 
 		$repeater->add_control(
+			'open_by_default',
+			array(
+				'label'      => __( 'Opened By Default', 'premium-addons-for-elementor' ),
+				'type'       => Controls_Manager::SWITCHER,
+				'separator'  => 'before',
+				'conditions' => array(
+					'relation' => 'or',
+					'terms'    => array(
+						array(
+							'name'     => 'pin_title',
+							'operator' => '!==',
+							'value'    => '',
+						),
+						array(
+							'name'     => 'pin_desc',
+							'operator' => '!==',
+							'value'    => '',
+						),
+					),
+				),
+			)
+		);
+
+		$repeater->add_control(
 			'custom_id',
 			array(
 				'label'       => __( 'Custom ID', 'premium-addons-for-elementor' ),
@@ -402,6 +385,46 @@ class Premium_Maps extends Widget_Base {
 				'label_block' => true,
 			)
 		);
+
+		$repeater->end_controls_tab();
+
+		$repeater->start_controls_tab(
+			'marker_style_tab',
+			array(
+				'label' => esc_html__( 'Style', 'elementor-pro' ),
+			)
+		);
+
+		$repeater->add_control(
+			'pin_icon',
+			array(
+				'label' => __( 'Custom Icon', 'premium-addons-for-elementor' ),
+				'type'  => Controls_Manager::MEDIA,
+			)
+		);
+
+		$repeater->add_control(
+			'pin_icon_size',
+			array(
+				'label'      => __( 'Size', 'premium-addons-for-elementor' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'em' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 1,
+						'max' => 200,
+					),
+					'em' => array(
+						'min' => 1,
+						'max' => 20,
+					),
+				),
+			)
+		);
+
+		$repeater->end_controls_tab();
+
+		$repeater->end_controls_tabs();
 
 		$this->add_control(
 			'premium_maps_map_pins',
@@ -583,6 +606,16 @@ class Premium_Maps extends Widget_Base {
 
 		}
 
+		$this->add_control(
+			'load_on_visible',
+			array(
+				'label'        => __( 'Load Map On Scroll', 'premium-addons-for-elementor' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'description'  => __( 'This option will load the map while scrolling to improve page loading speed', 'premium-addons-for-elementor' ),
+				'return_value' => 'true',
+			)
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -636,9 +669,72 @@ class Premium_Maps extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
+			'premium_maps_box_style',
+			array(
+				'label' => __( 'Map', 'premium-addons-for-elementor' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'     => 'map_border',
+				'selector' => '{{WRAPPER}} .premium-maps-container',
+			)
+		);
+
+		$this->add_control(
+			'premium_maps_box_radius',
+			array(
+				'label'      => __( 'Border Radius', 'premium-addons-for-elementor' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', '%', 'em' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .premium-maps-container,{{WRAPPER}} .premium_maps_map_height' => 'border-radius: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			array(
+				'label'    => __( 'Shadow', 'premium-addons-for-elementor' ),
+				'name'     => 'premium_maps_box_shadow',
+				'selector' => '{{WRAPPER}} .premium-maps-container',
+			)
+		);
+
+		$this->add_responsive_control(
+			'premium_maps_box_margin',
+			array(
+				'label'      => __( 'Margin', 'premium-addons-for-elementor' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .premium-maps-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'premium_maps_box_padding',
+			array(
+				'label'      => __( 'Padding', 'premium-addons-for-elementor' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .premium-maps-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
 			'marker_window',
 			array(
-				'label' => __( 'Marker Window', 'premium-addons-for-elementor' ),
+				'label' => __( 'Marker Info', 'premium-addons-for-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
@@ -717,20 +813,19 @@ class Premium_Maps extends Widget_Base {
 			)
 		);
 
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'premium_maps_pin_title_style',
+		$this->add_control(
+			'title_heading',
 			array(
-				'label' => __( 'Pin Title', 'premium-addons-for-elementor' ),
-				'tab'   => Controls_Manager::TAB_STYLE,
+				'label'     => __( 'Location Title', 'premium-addons-for-elementor' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
 			)
 		);
 
 		$this->add_control(
 			'premium_maps_pin_title_color',
 			array(
-				'label'     => __( 'Color', 'premium-addons-for-elementor' ),
+				'label'     => __( 'Text Color', 'premium-addons-for-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'global'    => array(
 					'default' => Global_Colors::COLOR_PRIMARY,
@@ -744,7 +839,7 @@ class Premium_Maps extends Widget_Base {
 		$this->add_control(
 			'title_background',
 			array(
-				'label'     => __( 'Title Background', 'premium-addons-for-elementor' ),
+				'label'     => __( 'Background Color', 'premium-addons-for-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} .premium-maps-title-wrap' => 'background-color: {{VALUE}};',
@@ -773,7 +868,6 @@ class Premium_Maps extends Widget_Base {
 			)
 		);
 
-		/*Pin Title Padding*/
 		$this->add_responsive_control(
 			'premium_maps_pin_title_padding',
 			array(
@@ -786,7 +880,6 @@ class Premium_Maps extends Widget_Base {
 			)
 		);
 
-		/*Pin Title ALign*/
 		$this->add_responsive_control(
 			'premium_maps_pin_title_align',
 			array(
@@ -814,22 +907,19 @@ class Premium_Maps extends Widget_Base {
 			)
 		);
 
-		/*End Title Style Section*/
-		$this->end_controls_section();
-
-		/*Start Pin Style Section*/
-		$this->start_controls_section(
-			'premium_maps_pin_text_style',
+		$this->add_control(
+			'description_heading',
 			array(
-				'label' => __( 'Pin Description', 'premium-addons-for-elementor' ),
-				'tab'   => Controls_Manager::TAB_STYLE,
+				'label'     => __( 'Description', 'premium-addons-for-elementor' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
 			)
 		);
 
 		$this->add_control(
 			'premium_maps_pin_text_color',
 			array(
-				'label'     => __( 'Color', 'premium-addons-for-elementor' ),
+				'label'     => __( 'Text Color', 'premium-addons-for-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'global'    => array(
 					'default' => Global_Colors::COLOR_SECONDARY,
@@ -906,7 +996,7 @@ class Premium_Maps extends Widget_Base {
 			$this->start_controls_section(
 				'advanced_pins_style',
 				array(
-					'label' => __( 'Pin Info', 'premium-addons-for-elementor' ),
+					'label' => __( 'Advanced Info', 'premium-addons-for-elementor' ),
 					'tab'   => Controls_Manager::TAB_STYLE,
 				)
 			);
@@ -944,7 +1034,7 @@ class Premium_Maps extends Widget_Base {
 			$this->add_control(
 				'skin1_heading',
 				array(
-					'label'     => __( 'Directions Icon (Skin 1 only)', 'premium-addons-for-elementor' ),
+					'label'     => __( 'Get Directions Icon (Skin 1 only)', 'premium-addons-for-elementor' ),
 					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				)
@@ -964,7 +1054,7 @@ class Premium_Maps extends Widget_Base {
 			$this->add_control(
 				'skin2_heading',
 				array(
-					'label'     => __( 'Directions Link (Skin 2, 3 only)', 'premium-addons-for-elementor' ),
+					'label'     => __( 'Get Directions Link (Skin 2, 3 only)', 'premium-addons-for-elementor' ),
 					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				)
@@ -973,7 +1063,7 @@ class Premium_Maps extends Widget_Base {
 			$this->add_control(
 				'directions_link_color',
 				array(
-					'label'     => __( 'Link Color', 'premium-addons-for-elementor' ),
+					'label'     => __( 'Text Color', 'premium-addons-for-elementor' ),
 					'type'      => Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} .advanced-pin:not(.maps-skin1) .premium-maps-location-direction' => 'color: {{VALUE}};',
@@ -992,69 +1082,6 @@ class Premium_Maps extends Widget_Base {
 			$this->end_controls_section();
 
 		}
-
-		$this->start_controls_section(
-			'premium_maps_box_style',
-			array(
-				'label' => __( 'Map', 'premium-addons-for-elementor' ),
-				'tab'   => Controls_Manager::TAB_STYLE,
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Border::get_type(),
-			array(
-				'name'     => 'map_border',
-				'selector' => '{{WRAPPER}} .premium-maps-container',
-			)
-		);
-
-		$this->add_control(
-			'premium_maps_box_radius',
-			array(
-				'label'      => __( 'Border Radius', 'premium-addons-for-elementor' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .premium-maps-container,{{WRAPPER}} .premium_maps_map_height' => 'border-radius: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Box_Shadow::get_type(),
-			array(
-				'label'    => __( 'Shadow', 'premium-addons-for-elementor' ),
-				'name'     => 'premium_maps_box_shadow',
-				'selector' => '{{WRAPPER}} .premium-maps-container',
-			)
-		);
-
-		$this->add_responsive_control(
-			'premium_maps_box_margin',
-			array(
-				'label'      => __( 'Margin', 'premium-addons-for-elementor' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .premium-maps-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'premium_maps_box_padding',
-			array(
-				'label'      => __( 'Padding', 'premium-addons-for-elementor' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .premium-maps-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
-				),
-			)
-		);
-
-		$this->end_controls_section();
 
 	}
 
@@ -1152,6 +1179,7 @@ class Premium_Maps extends Widget_Base {
 			'cluster'           => $marker_cluster,
 			'cluster_icon'      => $cluster_icon,
 			'drag'              => $settings['disable_drag'],
+			'loadScroll'        => $settings['load_on_visible'],
 		);
 
 		$this->add_render_attribute(

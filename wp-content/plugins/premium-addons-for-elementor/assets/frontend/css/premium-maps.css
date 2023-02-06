@@ -95,7 +95,7 @@
   .premium-maps-info-container.maps-skin1 .premium-maps-location-info {
     padding: 28px 16px 16px; }
   .premium-maps-info-container.maps-skin1 .premium-maps-info-desc {
-    border-top: 1px solid #e6e6e6;
+    border-top: 1px solid rgba(230, 230, 230, 0.5);
     margin-top: 12px;
     padding-top: 12px; }
   .premium-maps-info-container.maps-skin1 .premium-maps-location-direction {
@@ -120,7 +120,7 @@
               order: 1;
       background-color: #fff;
       padding-bottom: 10px;
-      border-bottom: 1px solid #e6e6e6; }
+      border-bottom: 1px solid rgba(230, 230, 230, 0.5); }
     .premium-maps-info-container.maps-skin2 .premium-maps-info-title {
       font-weight: bold;
       font-size: 18px; }
@@ -147,7 +147,7 @@
           -ms-flex-align: center;
               align-items: center;
       padding-bottom: 10px;
-      border-bottom: 1px solid #e6e6e6; }
+      border-bottom: 1px solid rgba(230, 230, 230, 0.5); }
     .premium-maps-info-container.maps-skin3 .premium-maps-title-wrap {
       -webkit-flex-direction: column;
           -ms-flex-direction: column;
@@ -180,11 +180,11 @@
 .premium-maps-container .gm-style img {
   max-width: none !important; }
 
-.premium-maps-container .gm-style-iw-tc {
-  top: -2px !important; }
-
 .premium-maps-container .gm-style-iw-c,
 .premium-maps-container .gm-style-iw-d {
   overflow: visible !important;
   max-height: initial !important;
   max-width: initial !important; }
+
+.premium-maps-container .gm-style-iw-c {
+  padding: 12px !important; }

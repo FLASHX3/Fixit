@@ -6,11 +6,23 @@ jQuery(window).on("elementor/frontend/init", function () {
             mapElement = $scope.find(".premium_maps_map_height"),
             mapSettings = mapElement.data("settings"),
             mapStyle = mapElement.data("style"),
-            markerCluster = mapSettings.cluster,
             premiumMapMarkers = [],
             premiumMapPopups = [];
 
-        premiumMap = newMap(mapElement, mapSettings, mapStyle);
+        if (mapSettings.loadScroll) {
+
+            var $closestSection = $scope.closest('.elementor-top-section');
+
+            elementorFrontend.waypoint($closestSection, function () {
+                premiumMap = newMap(mapElement, mapSettings, mapStyle);
+            }, {
+                offset: '70%'
+            });
+
+        } else {
+            premiumMap = newMap(mapElement, mapSettings, mapStyle);
+        }
+
 
         function newMap(map, settings, mapStyle) {
 
@@ -68,6 +80,13 @@ jQuery(window).on("elementor/frontend/init", function () {
 
                 });
 
+            }
+
+            if (mapSettings.cluster && MarkerClusterer) {
+
+                new MarkerClusterer(map, premiumMapMarkers, {
+                    imagePath: '' != mapSettings.cluster_icon ? mapSettings.cluster_icon : "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m"
+                });
             }
 
             return map;
@@ -226,13 +245,6 @@ jQuery(window).on("elementor/frontend/init", function () {
 
             return !['desktop', 'widescreen', 'laptop'].includes(currentDevice);
 
-        }
-
-        if (markerCluster && MarkerClusterer) {
-
-            var markerCluster = new MarkerClusterer(premiumMap, premiumMapMarkers, {
-                imagePath: '' != mapSettings.cluster_icon ? mapSettings.cluster_icon : "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m"
-            });
         }
 
     };

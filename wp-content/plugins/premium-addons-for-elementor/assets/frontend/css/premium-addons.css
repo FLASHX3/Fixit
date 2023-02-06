@@ -30,7 +30,7 @@
   height: 100%; }
   .premium-banner-img-wrap .premium-banner-ib-img {
     -ms-flex-negative: 0;
-        -webkit-flex-shrink: 0;
+            -webkit-flex-shrink: 0;
             flex-shrink: 0; }
 
 .premium-banner-ib-desc .premium-banner-read-more {
@@ -4321,7 +4321,7 @@ ul[data-list-animation*="animated-"] .premium-bullet-list-divider-inline {
   .premium-maps-info-container.maps-skin1 .premium-maps-location-info {
     padding: 28px 16px 16px; }
   .premium-maps-info-container.maps-skin1 .premium-maps-info-desc {
-    border-top: 1px solid #e6e6e6;
+    border-top: 1px solid rgba(230, 230, 230, 0.3);
     margin-top: 12px;
     padding-top: 12px; }
   .premium-maps-info-container.maps-skin1 .premium-maps-location-direction {
@@ -4346,7 +4346,7 @@ ul[data-list-animation*="animated-"] .premium-bullet-list-divider-inline {
               order: 1;
       background-color: #fff;
       padding-bottom: 10px;
-      border-bottom: 1px solid #e6e6e6; }
+      border-bottom: 1px solid rgba(230, 230, 230, 0.3); }
     .premium-maps-info-container.maps-skin2 .premium-maps-info-title {
       font-weight: bold;
       font-size: 18px; }
@@ -4373,7 +4373,7 @@ ul[data-list-animation*="animated-"] .premium-bullet-list-divider-inline {
           -ms-flex-align: center;
               align-items: center;
       padding-bottom: 10px;
-      border-bottom: 1px solid #e6e6e6; }
+      border-bottom: 1px solid rgba(230, 230, 230, 0.3); }
     .premium-maps-info-container.maps-skin3 .premium-maps-title-wrap {
       -webkit-flex-direction: column;
           -ms-flex-direction: column;
@@ -4406,14 +4406,14 @@ ul[data-list-animation*="animated-"] .premium-bullet-list-divider-inline {
 .premium-maps-container .gm-style img {
   max-width: none !important; }
 
-.premium-maps-container .gm-style-iw-tc {
-  top: -2px !important; }
-
 .premium-maps-container .gm-style-iw-c,
 .premium-maps-container .gm-style-iw-d {
   overflow: visible !important;
   max-height: initial !important;
   max-width: initial !important; }
+
+.premium-maps-container .gm-style-iw-c {
+  padding: 12px !important; }
 
 /**************** Premium Modal Box ****************/
 /***************************************************/
@@ -5824,6 +5824,11 @@ body.premium-scroll-disabled {
   height: 100vh;
   margin: 0; }
 
+/**Fix: conflict with Elementor's sticky feature. */
+.elementor-sticky__spacer .premium-mega-content-container {
+  visibility: hidden !important;
+  opacity: 0 !important; }
+
 /************ Premium Team Members ************/
 /**********************************************/
 .premium-person-container {
@@ -6798,6 +6803,15 @@ ul.premium-person-social-list {
 
 .premium-title-icon-row-reverse .premium-title-icon {
   margin-left: 10px; }
+
+.premium-title-flex-start .premium-title-header {
+  text-align: left; }
+
+.premium-title-center .premium-title-header {
+  text-align: center; }
+
+.premium-title-flex-end .premium-title-header {
+  text-align: right; }
 
 .premium-title-style3,
 .premium-title-style4 {

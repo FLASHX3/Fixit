@@ -1814,6 +1814,15 @@ class Premium_Nav_Menu extends Widget_Base {
 		);
 
 		$this->add_control(
+			'close_after_click',
+			array(
+				'label'       => __( 'Close Menu After Click', 'premium-addons-for-elementor' ),
+				'type'        => Controls_Manager::SWITCHER,
+				'render_type' => 'template',
+			)
+		);
+
+		$this->add_control(
 			'pa_disable_page_scroll',
 			array(
 				'label'        => __( 'Disable Page Scroll', 'premium-addons-for-elementor' ),
@@ -4383,7 +4392,9 @@ class Premium_Nav_Menu extends Widget_Base {
 
 		$break_point = '' === $break_point ? '1025' : $break_point;
 
-		$stretch_dropdown = 'yes' === $settings['pa_toggle_full'] ? true : false;
+		$stretch_dropdown = 'yes' === $settings['pa_toggle_full'];
+
+		$close_after_click = 'yes' === $settings['close_after_click'];
 
 		$is_click = 'click' === $settings['pa_ver_toggle_event'] && 'yes' !== $settings['pa_ver_toggle_open'];
 
@@ -4408,6 +4419,7 @@ class Premium_Nav_Menu extends Widget_Base {
 			'hoverEffect'     => $settings['sub_badge_hv_effects'],
 			'submenuEvent'    => $settings['submenu_event'],
 			'submenuTrigger'  => $settings['submenu_trigger'],
+			'closeAfterClick' => $close_after_click,
 		);
 
 		if ( 'yes' === $settings['pa_sticky_switcher'] ) {

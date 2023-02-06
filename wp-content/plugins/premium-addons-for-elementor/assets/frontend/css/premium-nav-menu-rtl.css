@@ -1503,3 +1503,9 @@ body.premium-scroll-disabled {
     height: 100vh;
     margin: 0;
 }
+
+/**Fix: conflict with Elementor's sticky feature. */
+.elementor-sticky__spacer .premium-mega-content-container {
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
